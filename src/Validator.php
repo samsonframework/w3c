@@ -8,7 +8,6 @@
 namespace samsonframework\w3c;
 
 use samsonframework\w3c\violation\Collection;
-use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
  * W3C validator
@@ -74,7 +73,7 @@ class Validator
         // If we have completed HTTP request
         if ($response === false) {
             // Throw http request failed exception
-            throw new \samsonframework\w3c\RequestException('W3C API http request failed');
+            throw new RequestException('W3C API http request failed');
         }
 
         return $response;
@@ -82,7 +81,7 @@ class Validator
 
     /**
      * W3C validator function
-     * @throws RequestException
+     * @throws \samsonframework\w3c\ParseException
      * @returns array
      */
     public function validate()
@@ -96,8 +95,9 @@ class Validator
         // Get document namespaces declaration
         $nameSpaces = $w3cResponse->getNamespaces(true);
 
+        // Check if we have received valid XML response
         if (!isset($nameSpaces['env'])) {
-            throw new \samsonframework\w3c\ParseException('XML parsing failed');
+            throw new ParseException('XML parsing failed');
         }
 
         // Get validation data
@@ -105,14 +105,6 @@ class Validator
             ->children($nameSpaces['env'])  // Get 'http://www.w3.org/2003/05/soap-envelope/'
             ->children($nameSpaces['m'])    // Get 'http://www.w3.org/2005/10/markup-validator'
             ->markupvalidationresponse;
-
-        if (isset($validationResponse->errors)) {
-            // Create errors collection
-            $this->w3cErrors = new Collection(
-                $validationResponse->errors->errorlist->error,
-                __NAMESPACE__ . '\violation\Error'
-            );
-        }
 
         // Create XML errors elements
         $errors = new \SimpleXMLElement('<t></t>');
