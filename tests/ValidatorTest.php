@@ -12,6 +12,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     /** @var Validator */
     protected $validator;
 
+    /** @var string Invalid URL for testing */
+    protected $invalidUrl = 'https://raw.githubusercontent.com/samsonframework/w3c/master/tests/invalid.html';
+
+    public function testInvalidRequest()
+    {
+        $this->validator = new Validator($this->invalidUrl, 'http://thisisnotasite2222.com/');
+        $this->validator->validate();
+    }
+
     public function testValidValidation()
     {
         $this->validator = new Validator('example.com');
@@ -20,7 +29,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidValidation()
     {
-        $this->validator = new Validator('https://raw.githubusercontent.com/samsonframework/w3c/master/tests/invalid.html');
+        $this->validator = new Validator($this->invalidUrl);
         $this->validator->validate();
     }
 }
