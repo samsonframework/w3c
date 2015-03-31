@@ -123,6 +123,7 @@ class Validator
             'errors' => $this->w3cErrors->toArray(),
             'warningsCount' => $this->w3cWarningsCount,
             'warnings' => $this->w3cWarnings->toArray(),
+            'refferer' => $this->w3cUrl.'?uri='.$this->sourceUrl
         );
     }
 }
