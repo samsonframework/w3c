@@ -5,11 +5,11 @@
  * Date: 31.03.2015
  * Time: 8:13
  */
-namespace samsonphp\w3c\violation;
+namespace samsonframework\w3c\violation;
 
 /**
  * Collection of W3C HTML markup violations
- * @package samsonphp\w3c\violation
+ * @package samsonframework\w3c\violation
  */
 class Collection implements \ArrayAccess
 {
@@ -20,7 +20,7 @@ class Collection implements \ArrayAccess
      * @param \SimpleXMLElement $xml XML violations collection
      * @param string $entity Class name for violation creation
      */
-    public function __construct(\SimpleXMLElement & $xml, $entity = '\samsonphp\w3c\violation\Violation')
+    public function __construct(\SimpleXMLElement & $xml, $entity = '\samsonframework\w3c\violation\Violation')
     {
         // Get all errors and fill error list
         foreach ($xml as $violation) {

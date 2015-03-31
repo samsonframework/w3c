@@ -1,7 +1,7 @@
 {
-	"name":"samsonphp/w3c",
-    "description": "SamsonPHP w3c validator",
-    "keywords": ["w3c", "samsonphp", "html", "validator"],
+	"name":"samsonframework/w3c",
+    "description": "SamsonPHP Framework w3c validator",
+    "keywords": ["w3c", "samsonframework", "html", "validator"],
     "authors":[
         {
             "name":"Vitaly Iegorov",

@@ -5,11 +5,11 @@
  * Date: 31.03.2015
  * Time: 6:40
  */
-namespace samsonphp\w3c;
+namespace samsonframework\w3c;
 
 /**
  * W3C API validation Exception
- * @package samsonphp\w3c
+ * @package samsonframework\w3c
  */
 class ParseException extends \Exception
 {

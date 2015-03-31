@@ -5,14 +5,14 @@
  * Date: 30.03.2015
  * Time: 20:56
  */
-namespace samsonphp\w3c;
+namespace samsonframework\w3c;
 
-use samsonphp\w3c\violation\Collection;
+use samsonframework\w3c\violation\Collection;
 
 /**
  * W3C validator
  *
- * @package samsonphp\w3c
+ * @package samsonframework\w3c
  * @author Vitalii Iehorov <egorov@samsonos.com>
  */
 class Validator
@@ -29,10 +29,10 @@ class Validator
     /** @var int Amount of validation warnings found */
     protected $w3cWarningsCount = 0;
 
-    /** @var \samsonphp\w3c\violation\Collection W3C Errors collection */
+    /** @var \samsonframework\w3c\violation\Collection W3C Errors collection */
     protected $w3cErrors = array();
 
-    /** @var \samsonphp\w3c\violation\Collection W3C Warnings collection */
+    /** @var \samsonframework\w3c\violation\Collection W3C Warnings collection */
     protected $w3cWarnings = array();
 
     /** @var string Source URL for validating  */

@@ -5,11 +5,11 @@
  * Date: 31.03.2015
  * Time: 7:57
  */
-namespace samsonphp\w3c\violation;
+namespace samsonframework\w3c\violation;
 
 /**
  * W3C HTML markup violation
- * @package samsonphp\w3c\violation
+ * @package samsonframework\w3c\violation
  */
 class Violation
 {
