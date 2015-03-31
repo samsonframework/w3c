@@ -15,9 +15,12 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     /** @var string Invalid URL for testing */
     protected $invalidUrl = 'https://raw.githubusercontent.com/samsonframework/w3c/master/tests/invalid.html';
 
+    /**
+     * @expectedException \samsonframework\w3c\ParseException
+     */
     public function testInvalidRequest()
     {
-        $this->validator = new Validator($this->invalidUrl, 'http://thisisnotasite2222.com/');
+        $this->validator = new Validator($this->invalidUrl, 'http://validator.w3.org/');
         $this->validator->validate();
     }
 

@@ -8,6 +8,7 @@
 namespace samsonframework\w3c;
 
 use samsonframework\w3c\violation\Collection;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
  * W3C validator
@@ -73,7 +74,7 @@ class Validator
         // If we have completed HTTP request
         if ($response === false) {
             // Throw http request failed exception
-            throw new RequestException('W3C API http request failed');
+            throw new \samsonframework\w3c\RequestException('W3C API http request failed');
         }
 
         return $response;
@@ -87,7 +88,7 @@ class Validator
     public function validate()
     {
         // Block errors reporting
-        libxml_use_internal_errors(false);
+        libxml_use_internal_errors(true);
 
         // W3C validator response
         $w3cResponse = simplexml_load_string($this->httpRequest($this->sourceUrl));
@@ -95,28 +96,46 @@ class Validator
         // Get document namespaces declaration
         $nameSpaces = $w3cResponse->getNamespaces(true);
 
+        if (!isset($nameSpaces['env'])) {
+            throw new \samsonframework\w3c\ParseException('XML parsing failed');
+        }
+
         // Get validation data
         $validationResponse = $w3cResponse
             ->children($nameSpaces['env'])  // Get 'http://www.w3.org/2003/05/soap-envelope/'
             ->children($nameSpaces['m'])    // Get 'http://www.w3.org/2005/10/markup-validator'
             ->markupvalidationresponse;
 
-        // Create errors collection
-        $this->w3cErrors = new Collection(
-            $validationResponse->errors->errorlist->error,
-            __NAMESPACE__.'\violation\Error'
-        );
+        if (isset($validationResponse->errors)) {
+            // Create errors collection
+            $this->w3cErrors = new Collection(
+                $validationResponse->errors->errorlist->error,
+                __NAMESPACE__ . '\violation\Error'
+            );
+        }
+
+        // Create XML errors elements
+        $errors = new \SimpleXMLElement('<t></t>');
+        if (isset($validationResponse->warnings)) {
+            $errors = $validationResponse->errors->errorlist->error;
+        }
+
+        // Create XML warnings elements
+        $warnings = new \SimpleXMLElement('<t></t>');
+        if (isset($validationResponse->warnings)) {
+            $warnings = $validationResponse->warnings->warninglist->warning;
+        }
 
         // Create warnings collection
-        $this->w3cWarnings = new Collection(
-            $validationResponse->warnings->warninglist->warning,
-            __NAMESPACE__.'\violation\Warning'
-        );
+        $this->w3cWarnings = new Collection($warnings, __NAMESPACE__ . '\violation\Warning');
+
+        // Create errors collection
+        $this->w3cErrors = new Collection($errors, __NAMESPACE__ . '\violation\Error');
 
         // Set validation summary results
         $this->w3cStatus = (bool)$validationResponse->validity;
-        $this->w3cErrorsCount = (int)$validationResponse->errors->errorcount;
-        $this->w3cWarningsCount = (int)$validationResponse->warnings->warningcount;
+        $this->w3cErrorsCount = sizeof($this->w3cErrors);
+        $this->w3cWarningsCount = sizeof($this->w3cWarnings);
 
         // Form response array
         return array(
