@@ -43,7 +43,7 @@ class Violation
     {
         $this->line = $line;
         $this->column = $column;
-        $this->message = $source;
+        $this->message = $message;
         $this->messageID = $messageID;
         $this->explanation = $explanation;
         $this->source = $source;

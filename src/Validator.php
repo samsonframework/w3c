@@ -18,7 +18,7 @@ use samsonframework\w3c\violation\Collection;
 class Validator
 {
     /** @var string URL for validating */
-    protected $w3cUrl = 'http://validator.w3.org/check';
+    protected $w3cUrl;
 
     /** @var bool Validation result status */
     protected $w3cStatus;
@@ -39,11 +39,13 @@ class Validator
     protected $sourceUrl;
 
     /**
-     * @param $sourceUrl Source URL for validating
+     * @param string $sourceUrl Source URL for validating
+     * @param string $sourceUrl W3C validator controller URL
      */
-    public function __construct($sourceUrl)
+    public function __construct($sourceUrl, $w3cUrl = 'http://validator.w3.org/check')
     {
         $this->sourceUrl = $sourceUrl;
+        $this->w3cUrl = $w3cUrl;
     }
 
     /**

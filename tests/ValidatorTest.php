@@ -12,13 +12,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     /** @var Validator */
     protected $validator;
 
-    public function setUp()
+    public function testValidValidation()
     {
         $this->validator = new Validator('example.com');
+        $this->validator->validate();
     }
 
-    public function testValidation()
+    public function testInvalidValidation()
     {
+        $this->validator = new Validator('https://raw.githubusercontent.com/samsonframework/w3c/master/tests/invalid.html');
         $this->validator->validate();
     }
 }
