@@ -40,7 +40,7 @@ class Validator
 
     /**
      * @param string $sourceUrl Source URL for validating
-     * @param string $sourceUrl W3C validator controller URL
+     * @param string $w3cUrl W3C validator controller URL
      */
     public function __construct($sourceUrl, $w3cUrl = 'http://validator.w3.org/check')
     {
