@@ -120,6 +120,11 @@ class Validator
             throw new ParseException('XML parsing failed');
         }
 
+        // Set validation summary results
+        $this->w3cStatus = (bool)$w3cResponse->xpath('//m:validity')[0];
+        $this->w3cErrorsCount = (int)$w3cResponse->xpath('//m:errorcount')[0];
+        $this->w3cWarningsCount = (int)$w3cResponse->xpath('//m:warningcount')[0];
+
         // Create warnings collection
         $this->w3cWarnings = $this->createViolationsCollection(
             $w3cResponse,
@@ -133,11 +138,6 @@ class Validator
             '//m:error',
             __NAMESPACE__ . '\violation\Error'
         );
-
-        // Set validation summary results
-        $this->w3cStatus = (bool)$w3cResponse->xpath('m:validity');
-        $this->w3cErrorsCount = sizeof($this->w3cErrors);
-        $this->w3cWarningsCount = sizeof($this->w3cWarnings);
 
         return $this;
     }
