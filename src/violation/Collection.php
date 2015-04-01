@@ -17,21 +17,21 @@ class Collection implements \ArrayAccess
     protected $collection = array();
 
     /**
-     * @param \SimpleXMLElement $xml XML violations collection
+     * @param array $xml XML violations collection
      * @param string $entity Class name for violation creation
      */
-    public function __construct(\SimpleXMLElement & $xml, $entity = '\samsonframework\w3c\violation\Violation')
+    public function __construct($xml, $entity = '\samsonframework\w3c\violation\Violation')
     {
         // Get all errors and fill error list
         foreach ($xml as $violation) {
             // Create violation entity
             $this->collection[] = new $entity(
-                (int)$violation->line,
-                (int)$violation->col,
-                (string)$violation->message,
-                (int)$violation->messageid,
-                (string)$violation->explanation,
-                (string)$violation->source
+                (int)$violation->xpath('m:line')[0],
+                (int)$violation->xpath('m:col')[0],
+                (string)$violation->xpath('m:message')[0],
+                (int)$violation->xpath('m:messageid')[0],
+                (string)$violation->xpath('m:explanation')[0],
+                (string)$violation->xpath('m:source')[0]
             );
         }
     }
