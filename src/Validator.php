@@ -93,6 +93,21 @@ class Validator
     }
 
     /**
+     * Correctly get XML node value
+     * @param \SimpleXMLElement $xml
+     * @param string $xmlPath
+     * @return int XML node value
+     */
+    protected function getReportValue($xml, $xmlPath)
+    {
+        // Get xml node by xpath
+        $xml = $xml->xpath($xmlPath);
+
+        // Return xml node value or 0
+        return sizeof($xml) ? (int)$xml[0] : 0;
+    }
+
+    /**
      * W3C validator function
      * @throws \samsonframework\w3c\ParseException
      * @return self Chaining
@@ -121,9 +136,9 @@ class Validator
         }
 
         // Set validation summary results
-        $this->w3cStatus = (bool)$w3cResponse->xpath('//m:validity')[0];
-        $this->w3cErrorsCount = (int)$w3cResponse->xpath('//m:errorcount')[0];
-        $this->w3cWarningsCount = (int)$w3cResponse->xpath('//m:warningcount')[0];
+        $this->w3cStatus = $this->getReportValue($w3cResponse, '//m:validity');
+        $this->w3cErrorsCount = $this->getReportValue($w3cResponse, '//m:errorcount');
+        $this->w3cWarningsCount = $this->getReportValue($w3cResponse, '//m:warningcount');
 
         // Create warnings collection
         $this->w3cWarnings = $this->createViolationsCollection(
